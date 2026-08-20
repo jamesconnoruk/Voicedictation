@@ -1,0 +1,15 @@
+# --- Core runtime ---
+faster-whisper==1.2.1     # local STT (CTranslate2). Pulls ctranslate2, tokenizers.
+sounddevice==0.5.1        # microphone capture (PortAudio)
+numpy>=1.24               # signal maths
+pynput==1.7.7             # global hotkey listener + keystroke simulation
+pyperclip==1.9.0          # clipboard paste
+PyQt6==6.7.1              # tray, overlay, main window
+
+# --- Build only (not needed at runtime) ---
+# pyinstaller==6.10.0     # uncomment to build the .exe
+
+# Notes:
+# * On NVIDIA GPU you additionally want CUDA 12 + cuDNN on PATH; faster-whisper
+#   then runs float16 and is much faster. CPU works out of the box (int8).
+# * On Windows, sounddevice bundles PortAudio; no extra install needed.

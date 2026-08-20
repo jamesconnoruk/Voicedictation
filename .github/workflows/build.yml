@@ -1,0 +1,58 @@
+name: Build Windows Installer
+
+# Runs on every push, and can also be triggered by hand from the Actions tab.
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest   # Microsoft's Windows machine does the compiling
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies + build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller pillow
+
+      - name: Run tests (informational — never blocks the build)
+        continue-on-error: true
+        run: |
+          pip install pytest
+          python -m pytest tests/test_all.py -q
+
+      - name: Generate branding assets (icon, wizard art)
+        run: python installer/make_assets.py
+
+      - name: Build the app with PyInstaller
+        run: python -m PyInstaller VoxKey.spec --noconfirm
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Compile the classic installer
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\VoxKey.iss
+
+      - name: Upload the installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: VoxKey-Setup
+          path: dist/VoxKey-Setup.exe
+          if-no-files-found: error
+
+      - name: Upload the standalone app (zipped)
+        uses: actions/upload-artifact@v4
+        with:
+          name: VoxKey-app
+          path: dist/VoxKey/

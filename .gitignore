@@ -1,0 +1,9 @@
+﻿__pycache__/
+*.pyc
+build/
+dist/
+*.spec.bak
+*.log
+voxkey_doctor_log.txt
+voxkey_autofix_log.txt
+python_engine_log.txt

@@ -1,0 +1,11 @@
+VoxKey (VOX Voice Zone) - End User Notice
+
+VoxKey is a local speech-to-text dictation tool. All speech recognition
+runs on your own computer; no audio or transcript data is sent anywhere.
+
+This software is provided "as is", without warranty of any kind. You may
+use it for personal and commercial purposes.
+
+Speech recognition is powered by the open-source Whisper model family via
+faster-whisper (MIT-licensed). By installing, you agree to use the software
+responsibly and at your own risk.
